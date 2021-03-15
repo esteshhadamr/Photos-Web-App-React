@@ -3,8 +3,8 @@ import axios from 'axios';
 import { MDBCard, MDBCardText } from 'mdbreact';
 import Photo from './Photo';
 
-// Home Component
-class Home extends React.Component {
+// MyPhotos Component
+class MyPhotos extends React.Component {
 
     constructor(props) {
         super(props);
@@ -15,13 +15,14 @@ class Home extends React.Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.fetchPhotos();
     }
 
     // Get all photos from server
     fetchPhotos() {
-        axios.get('/api/photos')
+        let userId = localStorage.getItem('userId');
+        axios.get('/api/photos/' + userId)
             .then(res => {
                 this.setState({
                     photos: res.data,
@@ -56,7 +57,7 @@ class Home extends React.Component {
             return (
                 <div key={photo._id} >
                     <MDBCard title={photo.description} className="imgcard">
-                        <Photo src={photo.avatar} file={this.state.image} />
+                        <Photo src={photo.avatar} />
                         <MDBCardText>
                             {photo.description}
                         </MDBCardText>
@@ -65,13 +66,13 @@ class Home extends React.Component {
                 </div>
 
             );
-        }.bind(this));
+        });
         return (
             <div className="container">
-                <h2 className="text-center"><b>photos App to save best shots</b></h2>
+                <h3 ><b>My photos </b></h3>
                 {allPhotos}
             </div>
         )
     }
 }
-export default Home
+export default MyPhotos

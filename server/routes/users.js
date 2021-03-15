@@ -15,4 +15,17 @@ router.get('/', function (req, res, next) {
   // res.send('respond with a resource');
 });
 
+
+/* GET user data. */
+
+router.get('/:id', function (req, res, next) {
+  User.findById(req.params.id)
+    .then(user => {
+      if (!user) throw createError(404, "User not found.");
+      res.json(user);
+    })
+    .catch(next);
+});
+
+
 module.exports = router;

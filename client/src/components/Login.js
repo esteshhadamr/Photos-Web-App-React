@@ -32,9 +32,14 @@ class Login extends React.Component {
         axios.post('/api/auth', data)
             .then(res => {
                 localStorage.setItem('token', res.data.token);
-                localStorage.setItem('_id', res.data._id);
+                localStorage.setItem('userId', res.data.id);
+                axios.get('/users/' + res.data.id)
+                    .then(res => {
+                        localStorage.setItem('user', JSON.stringify(res.data));
+                    })
                 axios.defaults.headers.common = { 'Authorization': res.data.token };
                 this.props.history.push('/');
+
             })
             .catch(err => {
                 this.setState({

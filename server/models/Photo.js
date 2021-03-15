@@ -7,8 +7,12 @@ const ModelSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
-
     },
+    avatar: {
+        type: String,
+        required: true
+    },
+
     description: {
         type: String,
         required: true
@@ -17,10 +21,15 @@ const ModelSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    // likes: {
-    //     type: Number,
-    // },
-   
+    likes: {
+        type: Number,
+        default: 0
+    },
+
+    created_at: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 // Create Message model

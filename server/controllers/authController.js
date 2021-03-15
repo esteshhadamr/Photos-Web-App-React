@@ -9,7 +9,7 @@ exports.login = (req, res, next) => {
     User.findOne({ email }).then(user => {
         // if user not found or password is wrong then create error 404.
         if (!user || !user.checkPassword(password)) {
-            throw createError(401, 'الرجاء التحقق من اسم المستخدم وكلمة المرور');
+            throw createError(401, 'Email or Password is inCorrect');
         }
         // Generate user token.
         res.json(user.signJwt());
@@ -23,7 +23,7 @@ exports.register = (req, res, next) => {
     User.findOne({ email })
         .then(user => {
             // if email already exist then create error.
-            if (user) throw createError(422, "الايميل موجود مسبقاً");
+            if (user) throw createError(422, "This email is already exists");
             return User.create(data);
         })
         .then(user => {

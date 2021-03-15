@@ -13,7 +13,9 @@
   padding: 20px;
   color: white;
 }
-
+h5{
+  color: rgb(24, 132, 175);
+}
 .App-title {
   font-size: 1.5em;
 }
@@ -21,7 +23,33 @@
 .App-intro {
   font-size: large;
 }
+.spinner-border {
+  position: fixed;
+	top: 45%;
+	left: 50%;
+;}
 
+.modal-image{
+  max-height: 150px !important;
+  float: left;
+  width:  150px;
+  height: 150px;
+  background-size: cover;
+  padding-left: 8px;
+
+} 
+ .imgcard {
+  float: left;
+  background-size: cover;
+  padding: 8px;
+  margin: 5px;
+
+} 
+.img-upload{
+  padding-left: 8px;
+  margin: 5px;
+  float: center;
+}
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

@@ -36,6 +36,19 @@ body {
     background-color: #89ceca;
 }
 
+.navbar li i {
+    
+    display: block;
+    color: rgb(37, 3, 3);
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navbar li i:hover {
+    background-color: #89ceca;
+}
+
 .navbar li a.active {
     background-color: #c77bf7;
 }

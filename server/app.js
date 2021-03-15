@@ -1,26 +1,3 @@
-// require('dotenv').config();
-
-// var express = require('express');
-// var path = require('path');
-// var cookieParser = require('cookie-parser');
-// var logger = require('morgan');
-
-// var indexRouter = require('./routes/index');
-// var usersRouter = require('./routes/users');
-
-// var app = express();
-
-// app.use(logger('dev'));
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
-// app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'public')));
-
-// app.use('/', indexRouter);
-// app.use('/users', usersRouter);
-
-// module.exports = app;
-
 require('dotenv').config();
 var express = require('express');
 var path = require('path');
@@ -33,7 +10,7 @@ var mongoose = require('mongoose');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
-// const registerRouter = require('./routes/auth');
+const photoRouter= require('./routes/photo');
 
 // Express Application
 const app = express();
@@ -44,11 +21,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '/public')));
+app.use('/uploads', express.static('uploads'));
 
 // Routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/api/auth', authRouter);
+// app.use('/api/upload', photoRouter);
+app.use('/api/photos', photoRouter);
 
 // app.use('/api/account', require('./routes/account'));
 
