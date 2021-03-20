@@ -36,9 +36,13 @@ router.get('/', controller.allPhotos);
 
 
 //Get All Photos to each user
-router.get('/:id', controller.PhotosTouser);
+router.get('/:id', auth.authenticated, controller.PhotosTouser);
 
-//Delete Photo
+//like Photo
+// router.post('/like/:id', controller.Photolike);
+
+
+//Delete Photo Not Working Yet
 router.delete('/:id', controller.delete);
 
 module.exports = router;

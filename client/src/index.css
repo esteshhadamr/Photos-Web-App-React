@@ -72,3 +72,7 @@ blockquote{
 button{
     margin-left: 5px;
 }
+.invalid-data {
+    color: #f86c6b;
+    border-color: #f86c6b;
+}

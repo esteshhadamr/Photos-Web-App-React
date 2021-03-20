@@ -21,7 +21,7 @@ router.get('/', function (req, res, next) {
 router.get('/:id', function (req, res, next) {
   User.findById(req.params.id)
     .then(user => {
-      if (!user) throw createError(404, "User not found.");
+      if (!user) throw createError(404, "User not found");
       res.json(user);
     })
     .catch(next);

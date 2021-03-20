@@ -5,11 +5,11 @@ const createError = require('http-errors');
 /** Login */
 exports.login = (req, res, next) => {
     const { email, password } = req.body;
-    // Find user by username.
+    // Find user by email.
     User.findOne({ email }).then(user => {
-        // if user not found or password is wrong then create error 404.
+        // if user not found or password is wrong then create error 401.
         if (!user || !user.checkPassword(password)) {
-            throw createError(401, 'Email or Password is inCorrect');
+            throw new createError(401, ' Email or Password is Incorrect');
         }
         // Generate user token.
         res.json(user.signJwt());
@@ -22,7 +22,6 @@ exports.register = (req, res, next) => {
     let data = { username, email, password } = req.body;
     User.findOne({ email })
         .then(user => {
-            // if email already exist then create error.
             if (user) throw createError(422, "This email is already exists");
             return User.create(data);
         })

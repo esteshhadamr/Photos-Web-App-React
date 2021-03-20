@@ -4,6 +4,8 @@ const createError = require('http-errors');
 const jwt = require('jsonwebtoken');
 
 // LoggedIn Middleware
+
+// Authenticated LoggedIn
 exports.authenticated = (req, res, next) => {
     let token = req.headers['authorization'];
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
@@ -13,5 +15,13 @@ exports.authenticated = (req, res, next) => {
             req.user = user;
             next();
         }).catch(next);
+    });
+};
+// Authenticated Guest
+exports.guest = (req, res, next) => {
+    let token = req.headers['authorization'];
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) return next();
+        throw createError(403);
     });
 };

@@ -39,6 +39,20 @@ exports.PhotosTouser = (req, res, next) => {
         .catch(next);
 };
 
+//Like photo
+///* exports.Photolike = (req, res, next) => {
+//     Photo.findByIdAndUpdate(req.params.id, {
+//         likes: likes + 1,
+//         { $push: { friends: friend }
+
+//     }
+//         .sort({ created_at: 'desc' })
+//         .then(photos => {
+//             res.json(photos);
+//         })
+//         .catch(next);
+// };
+//      
 
 exports.delete = (req, res, next) => {
     Photo.remove(req.params.id)

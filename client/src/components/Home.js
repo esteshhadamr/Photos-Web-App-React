@@ -60,7 +60,7 @@ class Home extends React.Component {
                         <MDBCardText>
                             {photo.description}
                         </MDBCardText>
-                        {(localStorage.getItem('token')) ? <div>  <i className="far fa-thumbs-up" title="Like"></i> <small>{photo.likes}</small></div> : ''}
+                        {(localStorage.getItem('token')) ? <div>  <i className="far fa-thumbs-up" title="Like"></i> <small>{(photo.likedbyusers).length}</small></div> : ''}
                     </MDBCard>
                 </div>
 

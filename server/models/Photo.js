@@ -21,6 +21,9 @@ const ModelSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+
+    likedbyusers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+
     likes: {
         type: Number,
         default: 0
@@ -32,7 +35,7 @@ const ModelSchema = new mongoose.Schema({
     }
 });
 
-// Create Message model
+// Create Photo model
 const Model = mongoose.model('Photo', ModelSchema);
 
 module.exports = Model;

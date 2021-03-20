@@ -6,11 +6,10 @@ var logger = require('morgan');
 var mongoose = require('mongoose');
 
 // Express Routers.
-
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
-const photoRouter= require('./routes/photo');
+const photoRouter = require('./routes/photo');
 
 // Express Application
 const app = express();
@@ -27,22 +26,18 @@ app.use('/uploads', express.static('uploads'));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/api/auth', authRouter);
-// app.use('/api/upload', photoRouter);
 app.use('/api/photos', photoRouter);
 
 // app.use('/api/account', require('./routes/account'));
 
-//Errors handling
+/* Errors handeling */
+app.use((req, res, next) => next(createError(404)));
 app.use((err, req, res, next) => {
-    if (err.name === 'MongoError' || err.name === 'ValidationError' || err.name === 'CastError') {
+    if (err.name == "MongoError" || err.name == "ValidationError" || err.name == "CastError") {
         err.status = 422;
     }
-    if (req.get('accept').includes('json')) {
-        res.status(err.status || 500).json({ message: err.message || 'some error eccured.' });
-    } else {
-        res.status(err.status || 500).sendFile(path.join(__dirname, 'public', 'index.html'));
-    }
-});
+    res.status(err.status || 500).json({ message: err.message || "some error occurred" })
+})
 
 // Connect to mongodb
 mongoose.connect(process.env.DB_URL, { useNewUrlParser: true, useCreateIndex: true }, err => {

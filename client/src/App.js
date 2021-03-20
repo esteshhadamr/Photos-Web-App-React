@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import './App.css';
-// import Auth from './Auth';
+import Auth from './Auth';
+import AppRoute from './AppRoute';
 import Header from './components/Header';
 import Home from './components/Home';
 import Login from './components/Login';
 import Register from './components/Register';
 import AddPhoto from './components/AddPhoto';
 import MyPhotos from './components/MyPhotos';
+import NotFound from './components/NotFound';
 
-
+// React Notifications
+import 'react-notifications/lib/notifications.css';
+import { NotificationContainer } from 'react-notifications';
 
 class App extends Component {
 
@@ -33,18 +37,21 @@ class App extends Component {
 
           <div className="container">
             <div>
+
               <Switch>
-
-                <Route exact path="/" component={Home} />
-                <Route path="/login" component={Login} />
-                <Route path="/Register" component={Register} />
-                <Route path="/addphoto" component={AddPhoto} />
-                <Route path="/myphotos" component={MyPhotos} />
-
+                <AppRoute path='/' exact component={Home} redirect='/' />
+                <AppRoute path='/login' component={Login} can={Auth.guest} redirect='/' />
+                <AppRoute path='/Register' component={Register} can={Auth.guest} redirect='/' />
+                <AppRoute path='/addphoto' component={AddPhoto} can={Auth.auth} redirect='/login' />
+                <AppRoute path='/myphotos' component={MyPhotos} can={Auth.auth} redirect='/login' />
+                <AppRoute component={NotFound} />
 
               </Switch>
+
             </div>
           </div>
+          <NotificationContainer />
+
         </div>
 
       </Router>
