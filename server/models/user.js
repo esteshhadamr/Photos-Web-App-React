@@ -21,8 +21,6 @@ const ModelSchema = new mongoose.Schema({
         type: String,
         required: true
     }
-    // mylikes: [{ type: Schema.Types.ObjectId, ref: 'Photo' }],
-
 
 });
 

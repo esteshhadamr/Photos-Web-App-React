@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import './App.css';
 import Auth from './Auth';
 import AppRoute from './AppRoute';
-import Header from './components/Header';
+import AppHeader from './components/AppHeader';
 import Home from './components/Home';
 import Login from './components/Login';
 import Register from './components/Register';
 import AddPhoto from './components/AddPhoto';
 import MyPhotos from './components/MyPhotos';
 import NotFound from './components/NotFound';
-
 // React Notifications
 import 'react-notifications/lib/notifications.css';
 import { NotificationContainer } from 'react-notifications';
@@ -21,8 +19,7 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    let token = localStorage.getItem('token');
-    axios.defaults.headers.common = { 'Authorization': token };
+    Auth.init();
 
   }
 
@@ -33,7 +30,7 @@ class App extends Component {
       <Router>
 
         <div>
-          <Header></Header>
+          <AppHeader></AppHeader>
 
           <div className="container">
             <div>

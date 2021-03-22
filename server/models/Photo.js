@@ -21,13 +21,7 @@ const ModelSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-
-    likedbyusers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-
-    likes: {
-        type: Number,
-        default: 0
-    },
+    likedbyusers: [],
 
     created_at: {
         type: Date,

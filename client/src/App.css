@@ -50,6 +50,11 @@ h5{
   margin: 5px;
   float: center;
 }
+h3{
+  color: rgba(90, 4, 18, 0.925);
+  text-align: center;
+
+}
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

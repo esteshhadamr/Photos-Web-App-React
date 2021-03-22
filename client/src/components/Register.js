@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput } from 'mdbreact';
 import { NotificationManager } from 'react-notifications';
-
+import Auth from '../Auth';
 
 class Register extends React.Component {
     constructor(props) {
@@ -13,8 +13,6 @@ class Register extends React.Component {
             email: '',
             password: '',
             error: '',
-            FormValid: false
-
         };
     }
 
@@ -35,16 +33,16 @@ class Register extends React.Component {
         if (form.checkValidity() === false) {
             event.target.className += ' was-validated';
             NotificationManager.error('Some data are missing', '', 3000);
-            this.setState({ FormValid: false })
             event.preventDefault();
         } else {
             axios.post('/api/auth/register', data).then(res => {
-                localStorage.setItem('token', res.data.token);
-                localStorage.setItem('_id', res.data._id);
-                axios.defaults.headers.common = { 'Authorization': res.data.token };
+                Auth.login(res.data)
+                axios.get('/users/' + res.data.id)
+                    .then(res => {
+                        localStorage.setItem('user', JSON.stringify(res.data));
+                    })
                 NotificationManager.success('Sign Up successfully', 'Successful!', 3000);
-
-                this.props.history.push('/login');
+                this.props.history.push('/');
             })
                 .catch(err => {
                     this.setState({ error: err.response.data.message });

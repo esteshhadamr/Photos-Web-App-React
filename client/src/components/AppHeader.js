@@ -1,27 +1,23 @@
 import React from 'react';
-import axios from 'axios';
+//import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
 import AddPhotoModal from './AddPhoto';
+import Auth from '../Auth';
 
-class Header extends React.Component {
+class AppHeader extends React.Component {
     constructor(props) {
         super(props);
         this.fileUpload = React.createRef();
         this.state = {
             AddPhotoshow: false,
-            // userData: (localStorage.getItem('user')) ? (localStorage.getItem('user')) : '',
-            
+            // userData: (localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user_data')) : '',
+            userData: JSON.parse(localStorage.getItem('user_data'))
         };
     }
 
     // Handle Logout listener
     logout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userId');
-        localStorage.removeItem('user');
-        delete axios.defaults.headers.common['Authorization'];
-        this.props.history.push('/');
-
+        Auth.logout();
     }
 
 
@@ -47,26 +43,22 @@ class Header extends React.Component {
     };
 
     render() {
-        if (localStorage.getItem('token')) {
-            
+        if (localStorage.getItem('user')) {
             return (
                 <div className="container">
                     <nav className="navbar navbar-expand-lg navbar-light bg-light">
                         <div className="container-fluid">
+                            {/* <h5><b>Welcome</b>< small>{this.state.userData.username}</small></h5> */}
                             <h5><b>Welcome</b></h5>
 
+
                             <ul className="row">
-                                {/* <div className="text-left">
-                                    <h4>Welcome </h4>
-                                    small>{this.state.userData.username}</small> 
-                                </div> */}
+
                                 <li><Link to="/">Home</Link></li>
                                 <li><Link to="/myphotos">My photos</Link></li>
                                 <li>
                                     <input type="file" ref={this.fileUpload} onChange={this.onImageChange} className="d-none" />
-                                    {/* <i class="fas fa-upload"></i> */}
-                                    {/* <div><i className="fas fa-upload " aria-hidden="true" title="Upload photo" onClick={this.OpenAddPhotoModal} >Upload</i></div> */}
-                                    <i title="Upload photo" onClick={this.showFileUpload} > Upload</i>
+                                    <i className=" fas fa-upload" title="Upload photo" onClick={this.showFileUpload} > Upload</i>
                                 </li>
 
 
@@ -97,4 +89,4 @@ class Header extends React.Component {
     }
 }
 
-export default withRouter(Header)
+export default withRouter(AppHeader)

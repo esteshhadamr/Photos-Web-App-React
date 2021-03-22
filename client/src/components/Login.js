@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput } from 'mdbreact';
 import { NotificationManager } from 'react-notifications';
-
+import Auth from '../Auth';
 class Login extends React.Component {
 
     constructor(props) {
@@ -14,13 +14,12 @@ class Login extends React.Component {
         this.state = {
             email: '',
             password: '',
-            error: ''
         };
     }
 
     //Handle input onChange
     onChangeHandler = event => {
-        this.setState({ [event.target.name]: event.target.value, error: '' });
+        this.setState({ [event.target.name]: event.target.value });
     };
 
     // On Submit click listener.
@@ -34,27 +33,20 @@ class Login extends React.Component {
         if (form.checkValidity() === false) {
             event.target.className += ' was-validated';
             NotificationManager.error('Some data are missing', '', 3000);
-            this.setState({ FormValid: false })
             event.preventDefault();
         }
         else {
             axios.post('/api/auth', data)
                 .then(res => {
-                    localStorage.setItem('token', res.data.token);
-                    localStorage.setItem('userId', res.data.id);
+                    Auth.login(res.data);
                     axios.get('/users/' + res.data.id)
-                        .then(res => {
-                            localStorage.setItem('user', JSON.stringify(res.data));
-                        })
-                    axios.defaults.headers.common = { 'Authorization': res.data.token };
+                    .then(res => {
+                        localStorage.setItem('user_data', JSON.stringify(res.data));
+                    })
                     NotificationManager.success('Login successfully', '', 3000);
                     this.props.history.push('/');
-
                 })
                 .catch(error => {
-                    this.setState({
-                        error: error.response.data.message
-                    });
                     NotificationManager.error(error.response.data.message, '', 3000);
                 })
         }

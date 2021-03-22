@@ -39,7 +39,7 @@ router.get('/', controller.allPhotos);
 router.get('/:id', auth.authenticated, controller.PhotosTouser);
 
 //like Photo
-// router.post('/like/:id', controller.Photolike);
+router.post('/:photoId', auth.authenticated, controller.likephoto);
 
 
 //Delete Photo Not Working Yet

@@ -18,6 +18,8 @@ const Auth = {
     logout: () => {
         delete axios.defaults.headers.common['Authorization'];
         localStorage.removeItem('user');
+        localStorage.removeItem('user_data');
+
     },
 
     /** Is user authenticated

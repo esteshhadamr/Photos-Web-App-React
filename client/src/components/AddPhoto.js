@@ -27,7 +27,7 @@ class AddPhotoModal extends React.Component {
 
     //Handle input onChange
     onChangeHandler = event => {
-        this.setState({ [event.target.name]: event.target.value, error: '' });
+        this.setState({ [event.target.name]: event.target.value });
     };
 
     onSubmit = e => {
@@ -48,9 +48,6 @@ class AddPhotoModal extends React.Component {
             axios.post('/api/photos', data)
                 .then(this.props.toggle)
                 .catch(error => {
-                    this.setState({
-                        error: error.response.data.message
-                    });
                     NotificationManager.error(error.response.data.message, '', 10000);
                 })
             this.setState({ show: false });

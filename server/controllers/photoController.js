@@ -39,21 +39,23 @@ exports.PhotosTouser = (req, res, next) => {
         .catch(next);
 };
 
-//Like photo
-///* exports.Photolike = (req, res, next) => {
-//     Photo.findByIdAndUpdate(req.params.id, {
-//         likes: likes + 1,
-//         { $push: { friends: friend }
+//Like Photo
+exports.likephoto = (req, res, next) => {
+    let data = req.user.id;
+ 
+    Photo.findById(req.params.photoId)
+        .then(photo => {
+            if (!photo) throw createError(404);
+            photo.likedbyusers.push(data);
+            return photo.save();
+        })
+        .then(photo => {
+            res.json(photo);
+        })
+        .catch(next);
+};
 
-//     }
-//         .sort({ created_at: 'desc' })
-//         .then(photos => {
-//             res.json(photos);
-//         })
-//         .catch(next);
-// };
-//      
-
+ // need to handle this in frontend
 exports.delete = (req, res, next) => {
     Photo.remove(req.params.id)
         .then(deleted => {
