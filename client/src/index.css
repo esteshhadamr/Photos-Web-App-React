@@ -4,38 +4,30 @@ body {
     margin: 0px;
 	font-family: 'Cairo', sans-serif;
 }
-
 .navbar {
     margin-bottom: 40px;
     background-color: #e3f2fd;
-
 }
-
 .navbar ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
 }
-
 .navbar li {
     float: left;
     margin-bottom: 0;
 }
-
-.navbar li a {
-    
+.navbar li a {  
     display: block;
     color: rgb(37, 3, 3);
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
 }
-
 .navbar li a:hover {
     background-color: #89ceca;
 }
-
 .navbar li i {
     
     display: block;
@@ -45,7 +37,6 @@ body {
     text-decoration: none;
     line-height: revert;
 }
-
 .navbar li i:hover {
     background-color: #89ceca;
 }
@@ -77,3 +68,38 @@ button{
     color: #f86c6b;
     border-color: #f86c6b;
 }
+
+/* Pagination  style*/
+  .current-page {
+    font-size: 1.5rem;
+    vertical-align: middle;
+    color:  #571212;
+    text-align: center;
+    margin: 10px;
+    margin-bottom: 10px;
+  }
+   ul.pagination {
+    margin: 10px;
+    margin-bottom: 10px;
+    margin-left: 400px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  ul.pagination li.page-item.active a.page-link {
+    color: #445565 !important;
+    background-color: #e79fcf !important;
+    border-color: #213636 !important;
+  }
+  ul.pagination a.page-link {
+    padding: 0.75rem 1rem;
+    min-width: 3.5rem;
+    text-align: center;
+    box-shadow: none !important;
+    border-color: #0d0d0e !important;
+    border-width: 2px;
+    color: #6b88a4;
+    font-weight: 900;
+    font-size: 1rem;
+  }
+  ul.pagination a.page-link:hover {
+    background-color: #f4f4f4;
+  }

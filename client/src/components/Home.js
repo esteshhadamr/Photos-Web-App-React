@@ -1,9 +1,10 @@
 import React from 'react';
 import axios from 'axios';
-import { MDBCard, MDBCardText } from 'mdbreact';
+import { MDBCard, MDBCardText, MDBRow } from 'mdbreact';
 import { NotificationManager } from 'react-notifications';
 import * as _ from 'underscore';
 import Photo from './Photo';
+import Pagination from './Pagination'
 
 // Home Component
 class Home extends React.Component {
@@ -12,6 +13,9 @@ class Home extends React.Component {
         super(props);
         this.state = {
             photos: [],
+            currentphotos: [],
+            currentPage: null,
+            totalPages: null,
             isLoading: true
         };
     }
@@ -56,7 +60,8 @@ class Home extends React.Component {
                     const index = _.indexOf(this.state.photos, photo);
                     this.state.photos[index] = res.data;
                     this.setState({
-                        photos: this.state.photos
+                        photos: this.state.photos,
+                        currentphotos: this.state.photos
                     })
                 })
                 .catch(err => {
@@ -65,8 +70,32 @@ class Home extends React.Component {
                 });
         }
     }
+    onPageChanged = data => {
+        const { photos } = this.state;
+        const { currentPage, totalPages, pageLimit } = data;
+
+        const offset = (currentPage - 1) * pageLimit;
+        const currentphotos = photos.slice(offset, offset + pageLimit);
+
+        this.setState({ currentPage, currentphotos, totalPages });
+    };
 
     render() {
+        const {
+            photos,
+            currentphotos,
+            currentPage,
+            totalPages
+        } = this.state;
+        const totalPhotots = photos.length;
+        
+        const headerClass = [
+            "text-dark py-2 pr-4 m-0",
+            currentPage ? "border-gray border-right" : ""
+        ]
+            .join(" ")
+            .trim();
+
         if (this.state.isLoading) {
             return <div className="spinner-border text-primary" role="status"></div>
 
@@ -74,23 +103,39 @@ class Home extends React.Component {
         if (this.state.photos.length < 1) {
             return (<h3>no photos to show </h3>);
         }
-        var allPhotos = this.state.photos.map(function (photo) {
-            return (
-                <div key={photo._id} >
-                    <MDBCard title={photo.description} className="imgcard">
-                        <Photo src={photo.avatar} file={this.state.image} />
-                        <MDBCardText>
-                            {photo.description}
-                        </MDBCardText>
-                        {(localStorage.getItem('user')) ? <div>  <i className="far fa-thumbs-up" title="Like" onClick={() => this.likePhoto(photo)}></i> <small>{(photo.likedbyusers).length}</small></div> : ''}
-                    </MDBCard>
-                </div>
-            );
-        }.bind(this));
+
         return (
             <div className="container">
                 <h2 className="text-center"><b>photos App to save best shots</b></h2>
-                {allPhotos}
+                <MDBRow>
+                    {currentphotos.map(photo => (
+                        <div key={photo._id} >
+                            <MDBCard title={photo.description} className="imgcard">
+                                <Photo src={photo.avatar} file={this.state.image} />
+                                <MDBCardText>
+                                    {photo.description}
+                                </MDBCardText>
+                                {(localStorage.getItem('user')) ? <div>  <i className="far fa-thumbs-up" title="Like" onClick={() => this.likePhoto(photo)}></i> <small>{(photo.likedbyusers).length}</small></div> : ''}
+                            </MDBCard>
+                        </div>
+                    ))}
+                </MDBRow>
+                {(totalPhotots > 12) ?
+                    <MDBRow className="text-center">
+                        <Pagination
+                            totalRecords={totalPhotots}
+                            pageLimit={12}
+                            pageNeighbours={1}
+                            onPageChanged={this.onPageChanged}
+                        />
+                        {currentPage && (
+                            <span className="current-page d-inline-block h-100 pl-4">
+                                Page <span className="font-weight-bold">{currentPage}</span> /{" "}
+                                <span className="font-weight-bold">{totalPages}</span>
+                            </span>
+                        )}
+                    </MDBRow>
+                    : ''}
             </div>
         )
     }
