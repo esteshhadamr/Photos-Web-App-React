@@ -2,19 +2,16 @@ import React from 'react';
 import { MDBContainer, MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter, MDBInput } from 'mdbreact';
 import { withRouter } from 'react-router-dom';
 import { NotificationManager } from 'react-notifications';
-
 import axios from 'axios';
 import Photo from './Photo';
 
 class AddPhotoModal extends React.Component {
-
 
     constructor(props) {
         super(props);
         this.fileUpload = React.createRef();
 
         this.state = {
-
             show: true,
             authorid: localStorage.getItem('userId'),
             image: (this.props.file) ? this.props.file : '',
@@ -22,7 +19,6 @@ class AddPhotoModal extends React.Component {
             location: '',
             description: ''
         };
-
     }
 
     //Handle input onChange
@@ -39,6 +35,7 @@ class AddPhotoModal extends React.Component {
         data.append('description', this.state.description);
         data.append('author', this.state.authorid);
         if (this.state.avatar) data.append('avatar', this.state.avatar, this.state.avatar.name);
+        //Check input validation
         if (form.checkValidity() === false) {
             e.target.className += ' was-validated';
             NotificationManager.error('Some data are missing', '', 3000);

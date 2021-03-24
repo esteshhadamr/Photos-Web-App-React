@@ -57,26 +57,26 @@ class Home extends React.Component {
             axios.post('/api/photos/' + photo._id, data)
                 .then(res => {
                     // to determine photo index in array & Update likes of it
-                    const index = _.indexOf(this.state.photos, photo);
-                    this.state.photos[index] = res.data;
+                    const index = _.indexOf(this.state.currentphotos, photo);
+                    this.state.currentphotos[index] = res.data;
                     this.setState({
                         photos: this.state.photos,
-                        currentphotos: this.state.photos
                     })
                 })
                 .catch(err => {
                     NotificationManager.error(err.response.data.message, '', 10000);
-
                 });
         }
     }
+
+    //Handle Page Change
     onPageChanged = data => {
+        this.fetchPhotos()
         const { photos } = this.state;
         const { currentPage, totalPages, pageLimit } = data;
 
         const offset = (currentPage - 1) * pageLimit;
         const currentphotos = photos.slice(offset, offset + pageLimit);
-
         this.setState({ currentPage, currentphotos, totalPages });
     };
 
@@ -88,14 +88,6 @@ class Home extends React.Component {
             totalPages
         } = this.state;
         const totalPhotots = photos.length;
-        
-        const headerClass = [
-            "text-dark py-2 pr-4 m-0",
-            currentPage ? "border-gray border-right" : ""
-        ]
-            .join(" ")
-            .trim();
-
         if (this.state.isLoading) {
             return <div className="spinner-border text-primary" role="status"></div>
 

@@ -34,15 +34,10 @@ router.post('/', [auth.authenticated, upload.single('avatar')], controller.uploa
 //Get All Photos
 router.get('/', controller.allPhotos);
 
-
 //Get All Photos to each user
 router.get('/:id', auth.authenticated, controller.PhotosTouser);
 
 //like Photo
 router.post('/:photoId', auth.authenticated, controller.likephoto);
-
-
-//Delete Photo Not Working Yet
-router.delete('/:id', controller.delete);
 
 module.exports = router;

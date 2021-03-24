@@ -30,6 +30,7 @@ class Register extends React.Component {
             email: this.state.email,
             password: this.state.password
         };
+        //Check input validation
         if (form.checkValidity() === false) {
             event.target.className += ' was-validated';
             NotificationManager.error('Some data are missing', '', 3000);
@@ -39,10 +40,10 @@ class Register extends React.Component {
                 Auth.login(res.data)
                 axios.get('/users/' + res.data.id)
                     .then(res => {
-                        localStorage.setItem('user', JSON.stringify(res.data));
+                        localStorage.setItem('user_data', JSON.stringify(res.data));
+                        NotificationManager.success('Sign Up successfully', 'Successful!', 3000);
+                        this.props.history.push('/');
                     })
-                NotificationManager.success('Sign Up successfully', 'Successful!', 3000);
-                this.props.history.push('/');
             })
                 .catch(err => {
                     this.setState({ error: err.response.data.message });
@@ -80,7 +81,6 @@ class Register extends React.Component {
                     </MDBCol>
                 </MDBRow>
             </MDBContainer >
-
         );
     }
 }

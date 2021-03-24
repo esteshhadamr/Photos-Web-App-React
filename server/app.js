@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const createError = require('http-errors');
+
 var mongoose = require('mongoose');
 
 // Express Routers.
@@ -27,8 +29,6 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/photos', photoRouter);
-
-// app.use('/api/account', require('./routes/account'));
 
 /* Errors handeling */
 app.use((req, res, next) => next(createError(404)));

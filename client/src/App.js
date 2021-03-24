@@ -10,6 +10,7 @@ import Register from './components/Register';
 import AddPhoto from './components/AddPhoto';
 import MyPhotos from './components/MyPhotos';
 import NotFound from './components/NotFound';
+
 // React Notifications
 import 'react-notifications/lib/notifications.css';
 import { NotificationContainer } from 'react-notifications';
@@ -31,7 +32,6 @@ class App extends Component {
 
         <div>
           <AppHeader></AppHeader>
-
           <div className="container">
             <div>
 

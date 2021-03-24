@@ -33,19 +33,6 @@ const Auth = {
      */
     guest: () => localStorage.getItem('user') === null,
 
-    // Get user token.
-    getToken: () => {
-        let user = JSON.parse(localStorage.getItem('user'));
-        return user !== null ? user.token : '';
-    },
-
-    // Set user
-    setUser: (newProfile) => {
-        let user = JSON.parse(localStorage.getItem('user'));
-        newProfile.token = user.token;
-        localStorage.setItem('user', JSON.stringify(newProfile));
-    },
-
 };
 
 export default Auth;

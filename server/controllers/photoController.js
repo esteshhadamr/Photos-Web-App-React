@@ -10,7 +10,6 @@ exports.uploadPhoto = (req, res, next) => {
         location: req.body.location,
         author: req.user.id,
     });
-
     model.save()
         .then(photo => {
             res.json();
@@ -42,7 +41,7 @@ exports.PhotosTouser = (req, res, next) => {
 //Like Photo
 exports.likephoto = (req, res, next) => {
     let data = req.user.id;
- 
+
     Photo.findById(req.params.photoId)
         .then(photo => {
             if (!photo) throw createError(404);
@@ -54,14 +53,3 @@ exports.likephoto = (req, res, next) => {
         })
         .catch(next);
 };
-
- // need to handle this in frontend
-exports.delete = (req, res, next) => {
-    Photo.remove(req.params.id)
-        .then(deleted => {
-            if (!deleted) throw createError(404, "Photo not found.");
-            res.json({ message: "Photo has been deleted" });
-        })
-        .catch(next);
-};
-
