@@ -49,12 +49,25 @@ class Home extends React.Component {
     //Handle like button click
     likePhoto = (photo) => {
         let user = JSON.parse(localStorage.getItem('user'));
+        let data = { userId: user.id };
+
+        // If user  already Like photo ,and click again will remove like 
         if (this.checkUserLikes(photo, user)) {
-            NotificationManager.warning('You are already liked this photo', '', 2000);
+            axios.post('/api/photos/unlike/' + photo._id, data)
+                .then(res => {
+                    //  to determine photo index in array & Update likes of it
+                    const index = _.indexOf(this.state.currentphotos, photo);
+                    this.state.currentphotos[index] = res.data;
+                    this.setState({
+                        photos: this.state.photos,
+                    })
+                })
+                .catch(err => {
+                    NotificationManager.error(err.response.data.message, '', 10000);
+                });
         }
         else {
-            let data = { userId: user.id };
-            axios.post('/api/photos/' + photo._id, data)
+            axios.post('/api/photos/like/' + photo._id, data)
                 .then(res => {
                     // to determine photo index in array & Update likes of it
                     const index = _.indexOf(this.state.currentphotos, photo);
@@ -81,53 +94,55 @@ class Home extends React.Component {
     };
 
     render() {
+
         const {
             photos,
             currentphotos,
             currentPage,
             totalPages
         } = this.state;
+
         const totalPhotots = photos.length;
         if (this.state.isLoading) {
             return <div className="spinner-border text-primary" role="status"></div>
 
         }
-        if (this.state.photos.length < 1) {
+        if (photos.length < 1) {
             return (<h3>no photos to show </h3>);
         }
+        let userData = JSON.parse(localStorage.getItem('user'))
 
         return (
             <div className="container">
                 <h2 className="text-center"><b>photos App to save best shots</b></h2>
                 <MDBRow>
                     {currentphotos.map(photo => (
-                        <div key={photo._id} >
+                        <div key={photo._id}  >
                             <MDBCard title={photo.description} className="imgcard">
                                 <Photo src={photo.avatar} file={this.state.image} />
                                 <MDBCardText>
                                     {photo.description}
                                 </MDBCardText>
-                                {(localStorage.getItem('user')) ? <div>  <i className="far fa-thumbs-up" title="Like" onClick={() => this.likePhoto(photo)}></i> <small>{(photo.likedbyusers).length}</small></div> : ''}
+                                {(localStorage.getItem('user')) ? <div>  <i className={(this.checkUserLikes(photo, userData)) ? "far fa-thumbs-up like" : "far fa-thumbs-up"} title="Like" onClick={() => this.likePhoto(photo)}></i> <small>{(photo.likedbyusers).length}</small></div> : ''}
                             </MDBCard>
                         </div>
                     ))}
                 </MDBRow>
-                {(totalPhotots > 12) ?
-                    <MDBRow className="text-center">
-                        <Pagination
-                            totalRecords={totalPhotots}
-                            pageLimit={12}
-                            pageNeighbours={1}
-                            onPageChanged={this.onPageChanged}
-                        />
-                        {currentPage && (
-                            <span className="current-page d-inline-block h-100 pl-4">
-                                Page <span className="font-weight-bold">{currentPage}</span> /{" "}
-                                <span className="font-weight-bold">{totalPages}</span>
-                            </span>
-                        )}
-                    </MDBRow>
-                    : ''}
+                <MDBRow className="text-center">
+                    <Pagination
+                        totalRecords={totalPhotots}
+                        pageLimit={12}
+                        pageNeighbours={1}
+                        onPageChanged={this.onPageChanged}
+                    />
+                    {currentPage && (
+                        <span className="current-page d-inline-block h-100 pl-4">
+                            Page <span className="font-weight-bold">{currentPage}</span> /{" "}
+                            <span className="font-weight-bold">{totalPages}</span>
+                        </span>
+                    )}
+                </MDBRow>
+
             </div>
         )
     }

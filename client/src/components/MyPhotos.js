@@ -51,12 +51,24 @@ class MyPhotos extends React.Component {
     //Handle like button click
     handleLike = (photo) => {
         let user = JSON.parse(localStorage.getItem('user'));
+        let data = { userId: user.id };
+        // If user  already Like photo ,and click again will remove like 
         if (this.checkUserLikes(photo, user)) {
-            NotificationManager.warning('You are already liked this photo', '', 2000);
+            axios.post('/api/photos/unlike/' + photo._id, data)
+                .then(res => {
+                    //  to determine photo index in array & Update likes of it
+                    const index = _.indexOf(this.state.currentphotos, photo);
+                    this.state.currentphotos[index] = res.data;
+                    this.setState({
+                        photos: this.state.photos,
+                    })
+                })
+                .catch(err => {
+                    NotificationManager.error(err.response.data.message, '', 10000);
+                });
         }
         else {
-            let data = { userId: user.id };
-            axios.post('/api/photos/' + photo._id, data)
+            axios.post('/api/photos/like/' + photo._id, data)
                 .then(res => {
                     // to determine photo index in array & Update likes of it
                     const index = _.indexOf(this.state.currentphotos, photo);
@@ -89,6 +101,7 @@ class MyPhotos extends React.Component {
             currentPage,
             totalPages
         } = this.state;
+
         const totalPhotots = photos.length;
         if (this.state.isLoading) {
             return <div className="spinner-border text-primary" role="status"></div>
@@ -96,6 +109,7 @@ class MyPhotos extends React.Component {
         if (photos.length < 1) {
             return (<h3>Upload your first photo </h3>);
         }
+        let userData = JSON.parse(localStorage.getItem('user'))
         return (
             <div className="container">
                 <h3 ><b>My photos </b></h3>
@@ -107,7 +121,7 @@ class MyPhotos extends React.Component {
                                 <MDBCardText>
                                     {photo.description}
                                 </MDBCardText>
-                                {(localStorage.getItem('user')) ? <div>  <i className="far fa-thumbs-up" title="Like" onClick={() => this.handleLike(photo)}></i> <small>{(photo.likedbyusers).length}</small></div> : ''}
+                                {(localStorage.getItem('user')) ? <div>  <i className={(this.checkUserLikes(photo, userData)) ? "far fa-thumbs-up like" : "far fa-thumbs-up"} title="Like" onClick={() => this.handleLike(photo)}></i> <small>{(photo.likedbyusers).length}</small></div> : ''}
                             </MDBCard>
                         </div>
                     ))}

@@ -53,3 +53,19 @@ exports.likephoto = (req, res, next) => {
         })
         .catch(next);
 };
+
+//UNLike Photo
+exports.unlikephoto = (req, res, next) => {
+    let data = req.user.id;
+    Photo.findById(req.params.photoId)
+        .then(photo => {
+            if (!photo) throw createError(404);
+            let Idindex = photo.likedbyusers.indexOf(data);
+            photo.likedbyusers.splice(Idindex, 1);
+            return photo.save();
+        })
+        .then(photo => {
+            res.json(photo);
+        })
+        .catch(next);
+};

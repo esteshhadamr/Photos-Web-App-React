@@ -38,6 +38,9 @@ router.get('/', controller.allPhotos);
 router.get('/:id', auth.authenticated, controller.PhotosTouser);
 
 //like Photo
-router.post('/:photoId', auth.authenticated, controller.likephoto);
+router.post('/like/:photoId', auth.authenticated, controller.likephoto);
+
+//UNlike Photo
+router.post('/unlike/:photoId', auth.authenticated, controller.unlikephoto);
 
 module.exports = router;
